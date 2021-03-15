@@ -1,0 +1,46 @@
+<script>
+
+  let arr1 = Array.from(new Array(1000000), (x, index) => {
+    return index;
+  });
+  let arr2 = Array.from(new Array(500000), (x, index) => {
+    return index + index;
+  });
+
+  let start6 = new Date().getTime();
+  console.log('数组开始去重');
+
+  console.log('去重后的长度', distinct6(arr1, arr2).length);
+
+  let end6 = new Date().getTime();
+  console.log('对象去重耗时', end6 - start6);
+
+  function distinct6(a, b) {
+    let arr = a.concat(b)
+    let result = [];
+    let obj = {}
+
+    for (let i = 0; i < arr.length; i++) {
+      if (!obj[i]) {
+        result.push(i)
+        obj[i] = 1
+      }
+    }
+    return result
+  }
+
+
+  let start5 = new Date().getTime();
+  console.log('数组开始去重');
+
+  console.log('去重后的长度', distinct5(arr1, arr2).length);
+
+  let end5 = new Date().getTime();
+  console.log('Set耗时', end5 - start5);
+
+  function distinct5(a, b) {
+    let arr = Array.from(new Set(...[a, b]))
+    return arr
+  }
+
+</script>

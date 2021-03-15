@@ -1,0 +1,136 @@
+<script>
+  let arr1 = Array.from(new Array(80000), (x, index) => {
+    return index;
+  });
+  let arr2 = Array.from(new Array(40000), (x, index) => {
+    return index + index;
+  });
+
+  // 方法1：双重for循环
+  // 外层循环遍历元素，内层循环检查是否重复
+  // 当有重复值的时候，可以使用 push()，也可以使用 splice()
+  let start1 = new Date().getTime();
+  console.log('数组开始去重');
+
+  console.log('去重后的长度', distinct1(arr1, arr2).length);
+
+  let end1 = new Date().getTime();
+  console.log('双重for循环耗时', end1 - start1);
+
+  function distinct1(a, b) {
+    let arr = a.concat(b);
+    for (let i = 0; i < arr.length; i++) {
+      for (let j = i + 1; j < arr.length; j++) {
+        if (arr[i] === arr[j]) {
+          arr.splice(j, 1);
+          //   splice可以改变数组长度，所以数组长度和j的下标减一
+          j--;
+        }
+      }
+    }
+    return arr;
+  }
+  // 去重后的长度 80000
+  // 耗时 6084
+
+  // 方法2：filter + indexOf 
+
+  let start2 = new Date().getTime();
+  console.log('数组开始去重');
+
+  console.log('去重后的长度', distinct2(arr1, arr2).length);
+
+  let end2 = new Date().getTime();
+  console.log('filter + indexOf耗时', end2 - start2);
+
+  function distinct2(a, b) {
+    let arr = a.concat(b);
+    return arr.filter((item, index) => {
+      return arr.indexOf(item) === index;
+    })
+  }
+  // 数组去重.html:42 去重后的长度 80000
+  // filter + indexOf耗时 3646
+
+  //方法3：使用for of 遍历数组，用includes判断有没有元素
+  let start3 = new Date().getTime();
+  console.log('数组开始去重');
+
+  console.log('去重后的长度', distinct3(arr1, arr2).length);
+
+  let end3 = new Date().getTime();
+  console.log('for of + includes耗时', end3 - start3);
+
+  function distinct3(a, b) {
+    let arr = a.concat(b);
+    let result = []
+    for (const item of arr) {
+      !result.includes(item) && result.push(item)
+    }
+    return result
+  }
+  // 去重后的长度 80000
+  // for of + includes耗时 3663
+
+  //方法4：使用sort排序然后进行相邻对比
+  let start4 = new Date().getTime();
+  console.log('数组开始去重');
+
+  console.log('去重后的长度', distinct4(arr1, arr2).length);
+
+  let end4 = new Date().getTime();
+  console.log('sort排序 + 相邻对比耗时', end4 - start4);
+
+  function distinct4(a, b) {
+    let arr = a.concat(b);
+    arr = arr.sort();
+    let result = []
+    for (let i = 0; i < arr.length; i++) {
+      arr[i] !== arr[i + 1] && result.push(arr[i])
+    }
+    return result
+  }
+  // 去重后的长度 80000
+  // sort排序 + 相邻对比耗时 10
+
+  //方法5：new Set()
+  let start5 = new Date().getTime();
+  console.log('数组开始去重');
+
+  console.log('去重后的长度', distinct5(arr1, arr2).length);
+
+  let end5 = new Date().getTime();
+  console.log('Set()耗时', end5 - start5);
+
+  function distinct5(a, b) {
+    let arr = Array.from(new Set(...[a, b]))
+    return arr
+  }
+  //去重后的长度 80000
+  //new Set()耗时 5
+
+  //方法6：for of + object 利用对象的属性不会重复去重
+  let start6 = new Date().getTime();
+  console.log('数组开始去重');
+
+  console.log('去重后的长度', distinct6(arr1, arr2).length);
+
+  let end6 = new Date().getTime();
+  console.log('for of + object 耗时', end6 - start6);
+
+  function distinct6(a, b) {
+    let arr = a.concat(b)
+    let result = [];
+    let obj = {}
+    for (const i of arr) {
+      if (!obj[i]) {
+        result.push(i)
+        obj[i] = 1
+      }
+    }
+    return result
+  }
+  //  去重后的长度 80000
+  //  耗时 8
+
+</script>
